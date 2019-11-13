@@ -17,6 +17,6 @@ public class CalculateBudgetCommand extends Command {
             balance = 0.00;
         }
 
-        System.out.printf("Balance: $%.2f\n\n", balance);
+        System.out.printf("Balance: $%.2f\n", balance);
     }
 }

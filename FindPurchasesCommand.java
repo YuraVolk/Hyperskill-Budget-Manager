@@ -29,7 +29,5 @@ public class FindPurchasesCommand extends Command {
 
             manager.history.printByType(type);
         }
-
-        System.out.println();
     }
 }
