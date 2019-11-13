@@ -26,6 +26,6 @@ public class Purchase {
     }
 
     void print() {
-        System.out.printf("%s: $.2f\n", name, cost);
+        System.out.printf("%s: $%.2f\n", name, cost);
     }
 }

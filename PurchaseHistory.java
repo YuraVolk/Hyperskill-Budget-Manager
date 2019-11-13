@@ -27,24 +27,31 @@ public class PurchaseHistory {
     void printByType(int type) {
         double total = 0.00;
         final String typeStr = getType(type);
+        int found = 0;
 
         if (type == 5) {
-            System.out.println("All: ");
+            System.out.println("All: \n");
         } else {
-            System.out.printf("%s: ", typeStr);
+            System.out.printf("%s: \n", typeStr);
         }
         for (Purchase purchase : history) {
             if (type == 5) {
                 purchase.print();
                 total += purchase.cost;
+                found++;
             } else {
                 if (purchase.type.equals(typeStr)) {
                     purchase.print();
                     total += purchase.cost;
+                    found++;
                 }
             }
         }
 
-        System.out.printf("Total sum: $%.2f", total);
+        if (found == 0) {
+            System.out.println("Purchase list is empty!\n");
+        } else {
+            System.out.printf("Total sum: $%.2f\n\n", total);
+        }
     }
 }

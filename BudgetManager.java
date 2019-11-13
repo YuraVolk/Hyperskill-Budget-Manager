@@ -1,31 +1,13 @@
 package budget;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class BudgetManager {
     Scanner scanner = new Scanner(System.in);
-    List<Entry> entries = new ArrayList<>();
-    double balance;
-    double totalExpenses;
-
-    private void printPurchases() {
-        int found = 0;
-
-        for (Entry entry : entries) {
-            if (entry.getType() == "expense") {
-                entry.printEntry();
-                found++;
-            }
-        }
-
-        if (found == 0) {
-            System.out.println("Purchase list is empty");
-        } else {
-            System.out.printf("Total sum: $%s\n",
-                    totalExpenses);
-        }
-
-    }
+    List<Double> incomes = new ArrayList<>();
+    PurchaseHistory history = new PurchaseHistory();
 
     void start() {
         Command command;
@@ -44,24 +26,20 @@ public class BudgetManager {
 
             switch (choice) {
                 case 1:
-                    command = new AddPurchaseCommand(this)
-                            .setType("income");
+                    command = new AddIncomeCommand(this);
                     command.execute();
                     break;
                 case 2:
-                    command = new AddPurchaseCommand(this)
-                            .setType("expense");
+                    command = new AddPurchaseCommand(this);
                     command.execute();
                     break;
                 case 3:
-                    command = new CalculateBalanceCommand(this);
+                    command = new FindPurchasesCommand(this);
                     command.execute();
-                    printPurchases();
                     break;
                 case 4:
-                    command = new CalculateBalanceCommand(this);
+                    command = new CalculateBudgetCommand(this);
                     command.execute();
-                    System.out.printf("\nBalance: $%.2f\n", balance);
                     break;
                 case 0:
                     System.out.println();

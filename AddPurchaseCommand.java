@@ -1,36 +1,35 @@
 package budget;
 
 public class AddPurchaseCommand extends Command {
-    private String type;
-
     AddPurchaseCommand(BudgetManager manager) {
         super(manager);
     }
 
     @Override
     void execute() {
-        final double cost;
+        int type;
+        String name;
+        double cost;
 
-        if (type.equals("income")) {
-            System.out.println("\nEnter income: ");
-            cost = manager.scanner.nextDouble();
-
-            manager.entries.add(new Entry(cost));
-            System.out.println("Income was added!");
-        } else {
-            System.out.println("\nEnter purchase name: ");
+        while (true) {
+            System.out.println("Choose the type of purchase\n" +
+                    "1) Food\n" +
+                    "2) Clothes\n" +
+                    "3) Entertainment\n" +
+                    "4) Other\n" +
+                    "5) Back");
+            type = manager.scanner.nextInt();
+            if (type == 5) {
+                break;
+            }
+            System.out.println("\nEnter purchase name:");
             manager.scanner.nextLine();
-            final String name = manager.scanner.nextLine();
-            System.out.println("Enter its price: ");
+            name = manager.scanner.nextLine();
+            System.out.println("Enter its price:");
             cost = manager.scanner.nextDouble();
 
-            manager.entries.add(new Entry(cost, name));
-            System.out.println("Purchase was added!");
+            manager.history.add(type, name, cost);
+            System.out.println("Purchase was added!\n");
         }
-    }
-
-    Command setType(String type) {
-        this.type = type;
-        return this;
     }
 }
