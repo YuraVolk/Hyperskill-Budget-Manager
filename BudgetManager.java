@@ -22,6 +22,7 @@ public class BudgetManager {
                     "4) Balance\n" +
                     "5) Save\n" +
                     "6) Load\n" +
+                    "7) Analyze (Sort)\n" +
                     "0) Exit");
             choice = scanner.nextInt();
             System.out.println();
@@ -49,6 +50,10 @@ public class BudgetManager {
                     break;
                 case 6:
                     command = new LoadPurchasesCommand(this);
+                    command.execute();
+                    break;
+                case 7:
+                    command = new AnalyzeCommand(this);
                     command.execute();
                     break;
                 case 0:
