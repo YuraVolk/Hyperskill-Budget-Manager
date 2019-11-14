@@ -23,6 +23,7 @@ public class FindPurchasesCommand extends Command {
                     "5) All\n" +
                     "6) Back");
             type = manager.scanner.nextInt();
+            System.out.println();
             if (type == 6) {
                 break;
             }

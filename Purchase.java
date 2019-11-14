@@ -4,6 +4,7 @@ public class Purchase {
     double cost;
     String name;
     String type;
+    private int internalType;
 
     Purchase(double cost, String name, int type) {
         switch (type) {
@@ -21,11 +22,16 @@ public class Purchase {
                 this.type = "Other";
                 break;
         }
+        this.internalType = type;
         this.cost = cost;
         this.name = name;
     }
 
     void print() {
-        System.out.printf("%s: $%.2f\n", name, cost);
+        System.out.printf("%s $%.2f\n", name, cost);
+    }
+
+    int getInternalType() {
+        return internalType;
     }
 }

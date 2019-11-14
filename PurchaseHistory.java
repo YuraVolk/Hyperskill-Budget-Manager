@@ -30,7 +30,7 @@ public class PurchaseHistory {
         int found = 0;
 
         if (type == 5) {
-            System.out.println("All: \n");
+            System.out.println("All: ");
         } else {
             System.out.printf("%s: \n", typeStr);
         }

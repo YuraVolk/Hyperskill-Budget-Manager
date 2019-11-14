@@ -15,15 +15,13 @@ public class SavePurchasesCommand extends Command {
 
             String toSave;
             for (Double income : manager.incomes) {
-                toSave = String.format("income_%s", income);
-                System.out.println(toSave);
+                toSave = String.format("income~%s", income);
                 writer.println(toSave);
             }
 
             for (Purchase purchase : manager.history.history) {
-                toSave = String.format("expense_%s_%s_%s",
-                            purchase.type, purchase.name, purchase.cost);
-                System.out.println(toSave);
+                toSave = String.format("expense~%s~%s~%s",
+                            purchase.getInternalType(), purchase.name, purchase.cost);
                 writer.println(toSave);
             }
             writer.close();

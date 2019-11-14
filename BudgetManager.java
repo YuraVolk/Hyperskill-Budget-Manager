@@ -47,6 +47,10 @@ public class BudgetManager {
                     command = new SavePurchasesCommand(this);
                     command.execute();
                     break;
+                case 6:
+                    command = new LoadPurchasesCommand(this);
+                    command.execute();
+                    break;
                 case 0:
                     System.out.println();
                     break main;
