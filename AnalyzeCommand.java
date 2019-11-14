@@ -1,8 +1,9 @@
 package budget;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeMap;
 
 public class AnalyzeCommand extends Command {
     private PurchaseComparator comparator = new PurchaseComparator();
@@ -21,13 +22,30 @@ public class AnalyzeCommand extends Command {
 
     private void sortTypes() {
         double total = 0.00;
-        List<Double> types = new ArrayList<>() {{
-            for (int i = 0; i < 4; i++) {
-                add(0.00);
-            }
+        double[] types = new double[4];
+        Arrays.fill(types, 0.00);
+
+        int type;
+        for (Purchase purchase : manager.history.history) {
+            type = purchase.getInternalType();
+            types[type - 1] += purchase.cost;
+            total += purchase.cost;
+        }
+
+        TreeMap<String, Double> typesMap = new TreeMap<>(
+                Collections.reverseOrder()){{
+            put("Food", types[0]);
+            put("Entertainment", types[1]);
+            put("Clothes", types[2]);
+            put("Other", types[3]);
         }};
 
-        
+        typesMap.entrySet().forEach(entry -> {
+            System.out.printf("%s - $%.2f\n", entry.getKey(),
+                    entry.getValue());
+        });
+
+        System.out.printf("Total sum: $%.2f\n\n", total);
     }
 
     @Override
@@ -46,6 +64,9 @@ public class AnalyzeCommand extends Command {
             switch (choice) {
                 case 1:
                     sortAll();
+                    break;
+                case 2:
+                    sortTypes();
                     break;
                 case 4:
                 default:
