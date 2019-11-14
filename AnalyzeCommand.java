@@ -1,9 +1,6 @@
 package budget;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 public class AnalyzeCommand extends Command {
     private PurchaseComparator comparator = new PurchaseComparator();
@@ -13,11 +10,15 @@ public class AnalyzeCommand extends Command {
 
     private void sortAll() {
         List<Purchase> list = manager.history.history;
-        Collections.sort(list, comparator);
+        list.sort(comparator);
+        double total = 0.00;
+
         System.out.println("\nAll:");
         for (Purchase purchase : list) {
+            total += purchase.cost;
             purchase.print();
         }
+        System.out.printf("Total sum: $%.2f\n\n", total);
     }
 
     private void sortTypes() {
@@ -32,19 +33,52 @@ public class AnalyzeCommand extends Command {
             total += purchase.cost;
         }
 
-        TreeMap<String, Double> typesMap = new TreeMap<>(
-                Collections.reverseOrder()){{
+        Map<String, Double> typesMap = new LinkedHashMap<>(){{
             put("Food", types[0]);
             put("Entertainment", types[1]);
             put("Clothes", types[2]);
             put("Other", types[3]);
         }};
 
-        typesMap.entrySet().forEach(entry -> {
-            System.out.printf("%s - $%.2f\n", entry.getKey(),
-                    entry.getValue());
-        });
+        typesMap.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEachOrdered(x -> typesMap.put(x.getKey(), x.getValue()));
 
+        typesMap.forEach((key, value) ->
+            System.out.printf("%s - $%.2f\n", key,
+                    value)
+        );
+
+        System.out.printf("Total sum: $%.2f\n\n", total);
+    }
+
+    private void sortByType() {
+        System.out.println("\nChoose the type of purchase\n" +
+                "1) Food\n" +
+                "2) Clothes\n" +
+                "3) Entertainment\n" +
+                "4) Other");
+
+        int choice = manager.scanner.nextInt();
+        if (choice >= 4 || choice < 1) {
+            return;
+        }
+
+        List<Purchase> purchases = new ArrayList<>();
+        double total = 0.00;
+
+        for (Purchase purchase : manager.history.history) {
+            if (purchase.getInternalType() == choice) {
+                purchases.add(purchase);
+                total += purchase.cost;
+            }
+        }
+        purchases.sort(comparator);
+
+        for (Purchase purchase : purchases) {
+            purchase.print();
+        }
         System.out.printf("Total sum: $%.2f\n\n", total);
     }
 
@@ -67,6 +101,9 @@ public class AnalyzeCommand extends Command {
                     break;
                 case 2:
                     sortTypes();
+                    break;
+                case 3:
+                    sortByType();
                     break;
                 case 4:
                 default:
