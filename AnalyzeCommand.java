@@ -9,6 +9,11 @@ public class AnalyzeCommand extends Command {
     }
 
     private void sortAll() {
+        if (manager.history.history.size() == 0) {
+            System.out.println("Purchase list is empty!\n");
+            return;
+        }
+
         List<Purchase> list = manager.history.history;
         list.sort(comparator);
         double total = 0.00;
@@ -22,6 +27,11 @@ public class AnalyzeCommand extends Command {
     }
 
     private void sortTypes() {
+        if (manager.history.history.size() == 0) {
+            System.out.println("Purchase list is empty!\n");
+            return;
+        }
+
         double total = 0.00;
         double[] types = new double[4];
         Arrays.fill(types, 0.00);
@@ -33,6 +43,8 @@ public class AnalyzeCommand extends Command {
             total += purchase.cost;
         }
 
+
+        System.out.println("\nTypes:");
         Map<String, Double> typesMap = new LinkedHashMap<>(){{
             put("Food", types[0]);
             put("Entertainment", types[1]);
@@ -58,28 +70,41 @@ public class AnalyzeCommand extends Command {
                 "1) Food\n" +
                 "2) Clothes\n" +
                 "3) Entertainment\n" +
-                "4) Other");
+                "4) Other\n");
 
         int choice = manager.scanner.nextInt();
-        if (choice >= 4 || choice < 1) {
+        System.out.println();
+        if (choice > 4 || choice < 1) {
+            return;
+        }
+
+        if (manager.history.history.size() == 0) {
+            System.out.println("Purchase list is empty!\n");
             return;
         }
 
         List<Purchase> purchases = new ArrayList<>();
         double total = 0.00;
+        String type = "";
 
         for (Purchase purchase : manager.history.history) {
             if (purchase.getInternalType() == choice) {
                 purchases.add(purchase);
                 total += purchase.cost;
+                type = purchase.type;
             }
         }
         purchases.sort(comparator);
 
-        for (Purchase purchase : purchases) {
-            purchase.print();
+        if (type == null) {
+            System.out.println("Purchase list is empty!\n\n");
+        } else {
+            System.out.printf("\n%s: \n", type);
+            for (Purchase purchase : purchases) {
+                purchase.print();
+            }
+            System.out.printf("Total sum: $%.2f\n\n", total);
         }
-        System.out.printf("Total sum: $%.2f\n\n", total);
     }
 
     @Override
@@ -95,6 +120,7 @@ public class AnalyzeCommand extends Command {
                     "3) Sort certain type\n" +
                     "4) Back");
             choice = manager.scanner.nextInt();
+
             switch (choice) {
                 case 1:
                     sortAll();
