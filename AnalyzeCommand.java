@@ -1,6 +1,7 @@
 package budget;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AnalyzeCommand extends Command {
     private PurchaseComparator comparator = new PurchaseComparator();
@@ -10,7 +11,7 @@ public class AnalyzeCommand extends Command {
 
     private void sortAll() {
         if (manager.history.history.size() == 0) {
-            System.out.println("Purchase list is empty!\n");
+            System.out.println("\nPurchase list is empty!\n");
             return;
         }
 
@@ -27,11 +28,6 @@ public class AnalyzeCommand extends Command {
     }
 
     private void sortTypes() {
-        if (manager.history.history.size() == 0) {
-            System.out.println("Purchase list is empty!\n");
-            return;
-        }
-
         double total = 0.00;
         double[] types = new double[4];
         Arrays.fill(types, 0.00);
@@ -47,17 +43,17 @@ public class AnalyzeCommand extends Command {
         System.out.println("\nTypes:");
         Map<String, Double> typesMap = new LinkedHashMap<>(){{
             put("Food", types[0]);
-            put("Entertainment", types[1]);
-            put("Clothes", types[2]);
+            put("Entertainment", types[2]);
+            put("Clothes", types[1]);
             put("Other", types[3]);
         }};
 
-        typesMap.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue())
-                .forEachOrdered(x -> typesMap.put(x.getKey(), x.getValue()));
+        Map<String, Double> result = typesMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
-        typesMap.forEach((key, value) ->
+        result.forEach((key, value) ->
             System.out.printf("%s - $%.2f\n", key,
                     value)
         );
