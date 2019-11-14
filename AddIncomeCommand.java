@@ -10,6 +10,6 @@ public class AddIncomeCommand extends Command {
         System.out.println("Enter income: ");
         double income = manager.scanner.nextDouble();
         manager.incomes.add(income);
-        System.out.println("Income was added!\n");
+        System.out.println("Income was added!");
     }
 }

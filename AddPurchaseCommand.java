@@ -22,7 +22,7 @@ public class AddPurchaseCommand extends Command {
             if (type == 5) {
                 break;
             }
-            System.out.println("Enter purchase name:");
+            System.out.println("\nEnter purchase name:");
             manager.scanner.nextLine();
             name = manager.scanner.nextLine();
             System.out.println("Enter its price:");
